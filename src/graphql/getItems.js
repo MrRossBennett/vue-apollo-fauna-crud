@@ -41,7 +41,13 @@ const getAll = gql`
         original_language,
         original_title
       }
-    }
+    },
+    # music(q: $input) @rest(path: "&{args}", type: "Music", endpoint: "discogsApi") {
+    #   results @type(name: "Music") {
+    #     title,
+    #     thumbnail: thumb
+    #   }
+    # }
   }
 `
 
