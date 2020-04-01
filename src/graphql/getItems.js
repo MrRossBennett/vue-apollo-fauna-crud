@@ -28,26 +28,28 @@ const getAll = gql`
           overview: description,
           release_date: publishedDate,
           categories,
-          thumbnail: imageLinks
+          imageLinks
         }
       }
     },
     movies(query: $input) @rest(path: "&{args}", type: "Movies", endpoint: "moviesApi") {
       results @type(name: "Movie") {
         title,
-        thumbnail: poster_path,
+        poster_path,
         overview
         release_date,
         original_language,
-        original_title
+        original_title,
+        popularity
       }
     },
-    # music(q: $input) @rest(path: "&{args}", type: "Music", endpoint: "discogsApi") {
-    #   results @type(name: "Music") {
-    #     title,
-    #     thumbnail: thumb
-    #   }
-    # }
+    music(q: $input) @rest(path: "&{args}", type: "Music", endpoint: "discogsApi") {
+      results @type(name: "Music") {
+        title,
+        thumbnail: thumb,
+        type
+      }
+    }
   }
 `
 
