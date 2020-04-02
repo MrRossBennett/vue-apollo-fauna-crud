@@ -18,7 +18,7 @@ const getMovies = gql`
 
 const getAll = gql`
   query getAll($input: String!) {
-    books(q: $input) @rest(path: "?{args}", type: "Books", endpoint: "booksApi") {
+    books(q: $input) @rest(path: "{args.q}", type: "Books", endpoint: "booksApi") {
       items @type(name: "Book") {
         volumeInfo @type(name: "Book") {
           title,
@@ -28,7 +28,8 @@ const getAll = gql`
           overview: description,
           release_date: publishedDate,
           categories,
-          imageLinks
+          imageLinks,
+          popularity: averageRating
         }
       }
     },
@@ -47,7 +48,8 @@ const getAll = gql`
       results @type(name: "Music") {
         title,
         thumbnail: thumb,
-        type
+        type,
+        popularity: community
       }
     }
   }

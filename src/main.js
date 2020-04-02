@@ -15,12 +15,10 @@ import './assets/tailwind.css'
 
 Vue.config.productionTip = false
 
-// const url = `https://accounts.spotify.com/authorize?client_id=${process.env.VUE_APP_SPOTIFY_CLIENT_KEY}&response_type=code&scope=user-read-private&redirect_uri=http%3A%2F%2Flocalhost:8080%2Fcallback`
-
 const restLink = new RestLink({
   endpoints: {
     booksApi: {
-      uri: 'https://www.googleapis.com/books/v1/volumes'
+      uri: 'https://www.googleapis.com/books/v1/volumes?q=intitle:'
     },
     moviesApi: {
       uri: `https://api.themoviedb.org/3/search/movie?api_key=${process.env.VUE_APP_TMDB_KEY}&language=en-US&page=1&include_adult=false`
@@ -28,9 +26,6 @@ const restLink = new RestLink({
     discogsApi: {
       uri: `https://api.discogs.com/database/search?key=${process.env.VUE_APP_DISCOGS_CONSUMER_KEY}&secret=${process.env.VUE_APP_DISCOGS_CONSUMER_SECRET}&title`
     }
-    // spotifyApi: {
-    //   uri: `https://api.spotify.com/v1/search?&type=artist&limit=10&access_token=${process.env.VUE_APP_SPOTIFY_CLIENT_KEY}`
-    // }
   }
 })
 
