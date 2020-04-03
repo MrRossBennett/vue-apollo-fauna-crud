@@ -29,7 +29,8 @@ const getAll = gql`
           release_date: publishedDate,
           categories,
           imageLinks,
-          popularity: averageRating
+          popularity: averageRating,
+          industryIdentifiers
         }
       }
     },
@@ -44,12 +45,17 @@ const getAll = gql`
         popularity
       }
     },
-    music(q: $input) @rest(path: "&{args}", type: "Music", endpoint: "discogsApi") {
+    music(q: $input) @rest(path: "&{args}", type: "Music", endpoint: "discogsSearchApi") {
       results @type(name: "Music") {
+        id @export(as: "id")
         title,
         thumbnail: thumb,
         type,
-        popularity: community
+        popularity @rest(path: "/releases/{exportVariables.id}/rating", type: "[Rating]", endpoint: "discogsReleaseApi") {
+          rating @type(name: "Average Rating") {
+            average
+          }
+        }
       }
     }
   }

@@ -16,6 +16,7 @@
     "apollo-link-http": "^1.5.16",
     "apollo-link-rest": "0.6.0",
     "core-js": "^3.6.4",
+    "date-fns": "^2.11.1",
     "graphql": "^14.6.0",
     "graphql-anywhere": "^4.2.6",
     "graphql-tag": "^2.10.3",

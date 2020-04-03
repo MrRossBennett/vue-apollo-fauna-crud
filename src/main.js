@@ -18,13 +18,16 @@ Vue.config.productionTip = false
 const restLink = new RestLink({
   endpoints: {
     booksApi: {
-      uri: 'https://www.googleapis.com/books/v1/volumes?q=intitle:'
+      uri: 'https://www.googleapis.com/books/v1/volumes?langRestrict=en&&orderBy=relevance&q='
     },
     moviesApi: {
       uri: `https://api.themoviedb.org/3/search/movie?api_key=${process.env.VUE_APP_TMDB_KEY}&language=en-US&page=1&include_adult=false`
     },
-    discogsApi: {
-      uri: `https://api.discogs.com/database/search?key=${process.env.VUE_APP_DISCOGS_CONSUMER_KEY}&secret=${process.env.VUE_APP_DISCOGS_CONSUMER_SECRET}&title`
+    discogsSearchApi: {
+      uri: `https://api.discogs.com/database/search?key=${process.env.VUE_APP_DISCOGS_CONSUMER_KEY}&secret=${process.env.VUE_APP_DISCOGS_CONSUMER_SECRET}&type=master&title&per_page=1&page=1`
+    },
+    discogsReleaseApi: {
+      uri: 'https://api.discogs.com'
     }
   }
 })

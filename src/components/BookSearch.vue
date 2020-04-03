@@ -30,6 +30,7 @@
         <div class="p-2">
           <p class="text-sm uppercase">{{ result.__typename }}</p>
           <h2 class="font-bold">{{ result.title }}</h2>
+          <p class="font-bold">{{ result.rank }}</p>
         </div>
         </div>
       </li>
@@ -40,6 +41,9 @@
 <script>
 import BooksNavBar from '@/components/BooksNavBar'
 import { getAll } from '../graphql/getItems'
+import { cleanseBooks } from '../utils/cleanseBooks'
+import { cleanseMovies } from '../utils/cleanseMovies'
+import { cleanseMusic } from '../utils/cleanseMusic'
 
 export default {
   components: {
@@ -51,6 +55,7 @@ export default {
   data () {
     return {
       input: null,
+
       books: [],
       movies: [],
       music: [],
@@ -65,78 +70,46 @@ export default {
   apollo: {
     books: {
       query: getAll,
+
+      debounce: 400,
+
       variables () {
         return {
           input: this.input
         }
       },
+
       skip () {
         return !this.input
       },
+
       result ({ data, loading, networkStatus }) {
-        // BOOKS
-        const booksData = data.books.items.map(book => book.volumeInfo)
-
-        // If book has same title and same author, remove from array.
-        const deDupedBooks = booksData.reduce((acc, current) => {
-          const hasAuthors = authors => {
-            return Array.isArray(authors) ? authors : []
-          }
-          const x = acc.find(item => item.title === current.title && item.authors.every(author => hasAuthors(current.authors).includes(author)))
-          if (!x) {
-            return acc.concat([current])
-          } else {
-            return acc
-          }
-        }, [])
-
-        const books = deDupedBooks.map(book => {
-          return book.imageLinks ? { ...book, thumbnail: book.imageLinks.thumbnail } : { ...book, thumbnail: 'https://via.placeholder.com/128x190' }
-        })
-        // Sort by popularity
-        this.books = books.sort((x, y) => y.popularity - x.popularity)
-
-        // MOVIES
-        const movies = data.movies.results.map(movie => {
-          return movie.poster_path ? { ...movie, thumbnail: `https://image.tmdb.org/t/p/w220_and_h330_bestv2${movie.poster_path}` } : { ...movie, thumbnail: 'https://via.placeholder.com/128x190' }
-        })
-        // Sort by popularity
-        this.movies = movies.sort((x, y) => y.popularity - x.popularity)
-
-        // MUSIC
-        // Only return master releases from Discogs
-        const music = data.music.results.filter(item => item.type === 'master')
-        // Sort by popularity
-        this.music = music.sort((x, y) => y.popularity.have - x.popularity.have)
+        this.books = cleanseBooks(data.books.items)
+        this.movies = cleanseMovies(data.movies.results)
+        this.music = cleanseMusic(data.music.results)
 
         // Search Results
         const results = [...this.books, ...this.movies, ...this.music]
 
-        const resultsSortedByTitle = results.sort(function (a, b) {
-          var textA = a.title.toUpperCase()
-          var textB = b.title.toUpperCase()
-          return (textA < textB) ? -1 : (textA > textB) ? 1 : 0
-        })
-
         // Set rank number based on search keyword
         const setRank = result => {
           return {
-            rank: result.title.replace(this.input, '').length
+            rank: result.popularity - result.title.replace(this.input, '').length
           }
         }
 
-        const resultsSortedByRank = resultsSortedByTitle
+        const resultsWithRank = results
           // .filter(({ title }) => title !== null) // remove all objects with null for diff
           .map(result => Object.assign(setRank(result), result))
 
-        // Final search results are sorted byt our rank
-        this.results = resultsSortedByRank.sort((x, y) => x.rank - y.rank)
-      },
-      debounce: 400
+        // Final search results are sorted by our rank
+        this.results = resultsWithRank.sort((x, y) => y.rank - x.rank)
+      }
     }
   },
 
   computed: {
+    // Checkbox filter results
     filteredResults () {
       if (!this.filters.length) {
         return this.results
@@ -149,7 +122,7 @@ export default {
     checkAll () {
       this.isCheckAll = !this.isCheckAll
 
-      if (this.isCheckAll) { // Check all
+      if (this.isCheckAll) {
         for (var key in this.filterOptions) {
           this.filters.push(this.filterOptions[key])
         }
