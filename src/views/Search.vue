@@ -1,28 +1,48 @@
 <template>
-  <div class="home">
-     <div class="header">
-      <BookSearch />
-      <hr />
-      <h1>Notes</h1>
-      <NoteCreate/>
+  <Layout>
+    <div class="w-2/6 xl:flex-1 justify-center xl:overflow-x-hidden relative">
+      <Search />
     </div>
-    <NotesList />
-  </div>
+    <div class="w-3/6 border-l border-gray-400 xl:overflow-x-hidden relative">
+      <Threads />
+    </div>
+    <div class="w-1/6 border-l border-gray-400 px-6">
+      Activity
+    </div>
+    <!-- <hr />
+    <h1>Notes</h1>
+    <NoteCreate />
+    <NotesList /> -->
+  </Layout>
 </template>
 
 <script>
-// @ is an alias to /src
-import NotesList from '@/components/NotesList.vue'
-import NoteCreate from '@/components/NoteCreate.vue'
-import BookSearch from '@/components/BookSearch.vue'
+import Layout from '@src/layouts/main'
+// import NotesList from '@components/NotesList'
+// import NoteCreate from '@components/NoteCreate'
+import Search from '@components/Search'
+import Threads from '@components/Threads'
+import { mapState } from 'vuex'
 
 export default {
-  name: 'Search',
-
   components: {
-    NotesList,
-    NoteCreate,
-    BookSearch
+    Layout,
+    // NotesList,
+    // NoteCreate,
+    Search,
+    Threads
+  },
+
+  data() {
+    return {
+      column: {}
+    }
+  },
+
+  computed: {
+    ...mapState({
+      board: state => state.threads.board
+    })
   }
 }
 </script>

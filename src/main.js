@@ -1,8 +1,5 @@
 import Vue from 'vue'
-import App from './App.vue'
 import './registerServiceWorker'
-import router from './router'
-import store from './store'
 
 import { ApolloClient } from 'apollo-client'
 import { ApolloLink } from 'apollo-link'
@@ -11,6 +8,9 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { setContext } from 'apollo-link-context'
 import { RestLink } from 'apollo-link-rest'
 import VueApollo from 'vue-apollo'
+import App from './App.vue'
+import store from './store'
+import router from './router'
 import './assets/tailwind.css'
 
 Vue.config.productionTip = false

@@ -7,9 +7,28 @@ module.exports = {
       },
       height: {
         128: '32rem'
+      },
+      colors: {
+        blue: '#00aeef',
+        black: '#141e2a'
       }
-    }
+    },
+    customForms: theme => ({
+      default: {
+        textarea: {
+          '&:focus': {
+            boxShadow: undefined,
+            borderColor: theme('colors.teal.400'),
+          }
+        }
+      }
+    })
   },
-  variants: {},
-  plugins: []
+  variants: {
+    margin: ['responsive', 'first', 'last'],
+    padding: ['responsive', 'first', 'last']
+  },
+  plugins: [
+    require('@tailwindcss/custom-forms')
+  ]
 }

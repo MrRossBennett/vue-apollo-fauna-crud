@@ -5,7 +5,9 @@
         <NoteDelete
           :id="id"
         />
-        <button class="menu-button" @click="() => editing = true">Edit</button>
+        <button
+class="menu-button"
+@click="() => editing = true">Edit</button>
       </div>
       <p class="body">{{body}}</p>
       <p class="author">~ {{author}}</p>
@@ -13,7 +15,9 @@
 
     <template v-else>
       <div class="menu-buttons">
-        <button class="menu-button" @click="() => editing = false">Cancel</button>
+        <button
+class="menu-button"
+@click="() => editing = false">Cancel</button>
       </div>
       <NoteEditor
         :id="id"
@@ -26,8 +30,8 @@
 </template>
 
 <script>
-import NoteDelete from '@/components/NoteDelete.vue'
-import NoteEditor from '@/components/NoteEditor.vue'
+import NoteDelete from '@components/NoteDelete.vue'
+import NoteEditor from '@components/NoteEditor.vue'
 
 export default {
   components: {

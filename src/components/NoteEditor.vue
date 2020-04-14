@@ -5,12 +5,26 @@
     :update="updateCache"
     @done="onDone"
   >
-
+    yarn
     <template v-slot="{ mutate, loading, error }">
-      <input id="body" type="text" placeholder="Contents" :disabled="loading" v-model="newBody"/>
-      <input id="author" type="text" placeholder="Author" :disabled="loading" v-model="newAuthor"/>
-      <button :disabled="loading || !isSubmittable" @click="mutate">Save</button>
-      <p class="error" v-if="error">{{error}}</p>
+      <input
+        id="body"
+        v-model="newBody"
+        type="text"
+        placeholder="Contents"
+        :disabled="loading"
+      />
+      <input
+        id="author"
+        v-model="newAuthor"
+        type="text"
+        placeholder="Author"
+        :disabled="loading"
+      />
+      <button :disabled="loading || !isSubmittable" @click="mutate">
+        Save
+      </button>
+      <p v-if="error" class="error">{{ error }}</p>
       <p v-if="loading">Saving...</p>
       <!-- <p class="success" v-if="showSuccess">Note saved!</p> -->
     </template>
@@ -36,7 +50,7 @@ export default {
     }
   },
 
-  data () {
+  data() {
     return {
       newBody: this.body,
       newAuthor: this.author
@@ -44,20 +58,26 @@ export default {
   },
 
   computed: {
-    isSubmittable () {
-      return !!this.newAuthor && !!this.newBody && !(this.newBody === this.body && this.newAuthor === this.author)
+    isSubmittable() {
+      return (
+        !!this.newAuthor &&
+        !!this.newBody &&
+        !(this.newBody === this.body && this.newAuthor === this.author)
+      )
     }
   },
 
   methods: {
-    onDone () {
+    onDone() {
       this.$emit('saved')
     },
 
-    updateCache (store, result) {
+    updateCache(store, result) {
       const updatedNote = result.data.updateNote
       const data = store.readQuery({ query: allNotes })
-      const indexOfNote = data.allNotes.data.findIndex(n => n._id === updatedNote._id)
+      const indexOfNote = data.allNotes.data.findIndex(
+        n => n._id === updatedNote._id
+      )
       data.allNotes.data[indexOfNote] = updatedNote
       store.writeQuery({ query: allNotes, data })
     }

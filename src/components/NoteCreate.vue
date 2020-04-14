@@ -10,22 +10,25 @@
       <h4>Add Note:</h4>
       <input
         id="body"
+        v-model="body"
         type="text"
         placeholder="Contents"
         :disabled="loading"
-        v-model="body"
       />
       <input
         id="author"
+        v-model="author"
         type="text"
         placeholder="Author"
         :disabled="loading"
-        v-model="author"
       />
-      <button :disabled="loading || !isSubmittable" @click="mutate">Save</button>
-      <p class="error" v-if="error">{{error}}</p>
-      <p v-if="loading">Saving...<p>
-      <p class="success" v-if="showSuccess">Note saved!</p>
+      <button :disabled="loading || !isSubmittable" @click="mutate">
+        Save
+      </button>
+      <p v-if="error" class="error">{{ error }}</p>
+      <p v-if="loading">Saving...</p>
+      <p></p>
+      <p v-if="showSuccess" class="success">Note saved!</p>
     </template>
   </ApolloMutation>
 </template>
@@ -35,8 +38,7 @@ import createNote from '../graphql/createNote'
 import allNotes from '../graphql/allNotes'
 
 export default {
-
-  data () {
+  data() {
     return {
       query: createNote,
       author: '',
@@ -46,13 +48,13 @@ export default {
   },
 
   computed: {
-    isSubmittable () {
+    isSubmittable() {
       return !!this.author && !!this.body
     }
   },
 
   methods: {
-    onDone () {
+    onDone() {
       this.showSuccess = true
       this.author = ''
       this.body = ''
@@ -61,7 +63,7 @@ export default {
       }, 2000)
     },
 
-    updateCache (store, result) {
+    updateCache(store, result) {
       const newNote = result.data.createNote
       const data = store.readQuery({ query: allNotes })
       data.allNotes.data = [...data.allNotes.data, newNote]

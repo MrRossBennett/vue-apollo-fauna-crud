@@ -4,7 +4,7 @@ export const cleanseMusic = music => {
   const filteredMusic = music.map(item => {
     return {
       ...item,
-      popularity: Math.round(item.popularity.rating.average * 100 / 5)
+      popularity: item.popularity ? Math.round(item.popularity.rating.average * 100 / 5) : null
     }
   })
   // Sort by popularity

@@ -1,12 +1,12 @@
 <template>
   <ApolloMutation
     :mutation="require('../graphql/deleteNote.js').default"
-    :variables="{id}"
+    :variables="{ id }"
     :update="updateCache"
   >
     <template v-slot="{ mutate, loading }">
-      <button class="button" @click="loading? () => {} : mutate()">
-        {{loading? "deleting..." : "X"}}
+      <button class="button" @click="loading ? () => {} : mutate()">
+        {{ loading ? 'deleting...' : 'X' }}
       </button>
     </template>
   </ApolloMutation>
@@ -24,7 +24,7 @@ export default {
   },
 
   methods: {
-    updateCache (store, result) {
+    updateCache(store, result) {
       const oldNote = result.data.deleteNote
       const data = store.readQuery({ query: allNotes })
       data.allNotes.data = data.allNotes.data.filter(n => n._id !== oldNote._id)

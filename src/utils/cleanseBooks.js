@@ -20,7 +20,7 @@ export const cleanseBooks = books => {
   // const formatReleaseDate = date => format(new Date(date), 'yyyy')
 
   const filteredbooks = booksData.map(book => {
-    return book.imageLinks ? { ...book, thumbnail: book.imageLinks.thumbnail } : { ...book, thumbnail: 'https://via.placeholder.com/128x190' }
+    return book.imageLinks ? { ...book, thumbnail: `${book.imageLinks.thumbnail}?fife=w400-h600 2x` } : { ...book, thumbnail: 'https://via.placeholder.com/128x190' }
   })
 
   const cleanedBooks = filteredbooks.map(book => {
